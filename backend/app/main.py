@@ -200,11 +200,12 @@ def tick():
             if not driver or driver.status != DriverStatus.on_trip:
                 continue
             
-            # Determine target: pickup if not there yet, otherwise dropoff
-            if driver.x != ride.pickup.x or driver.y != ride.pickup.y:
-                target = {'x': ride.pickup.x, 'y': ride.pickup.y}
-            else:
-                target = {'x': ride.dropoff.x, 'y': ride.dropoff.y}
+            # Check if driver reached pickup and should switch to dropoff
+            if not driver.is_heading_to_dropoff and driver.x == ride.pickup.x and driver.y == ride.pickup.y:
+                driver.is_heading_to_dropoff = True
+            
+            # Determine target based on phase
+            target = {'x': ride.dropoff.x, 'y': ride.dropoff.y} if driver.is_heading_to_dropoff else {'x': ride.pickup.x, 'y': ride.pickup.y}
             
             # Move one step toward target using Manhattan path
             if driver.x != target['x']:
@@ -217,6 +218,7 @@ def tick():
                 ride.status = RideStatus.completed
                 driver.status = DriverStatus.available
                 driver.current_ride_id = None
+                driver.is_heading_to_dropoff = False  # Reset for next ride
                 driver.last_busy_tick = state.tick  # Update on completion for fairness
                 
                 # Move rider to dropoff location

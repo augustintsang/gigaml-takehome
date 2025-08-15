@@ -34,6 +34,7 @@ class Driver(BaseModel):
     assigned_count: int = 0
     last_busy_tick: Optional[int] = None
     current_ride_id: Optional[str] = None
+    is_heading_to_dropoff: bool = False  # Track if driver is past pickup phase
 
 
 class Rider(BaseModel):
