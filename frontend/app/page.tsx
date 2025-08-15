@@ -17,9 +17,7 @@ export default function Home() {
 
   const fetchState = async () => {
     try {
-      console.log('Fetching state...')
       const data = await API.getState()
-      console.log('Received state:', data)
       setState(data)
     } catch (error) {
       console.error('Failed to fetch state:', error)

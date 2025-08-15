@@ -13,6 +13,7 @@ interface Driver {
   assigned_count: number;
   last_busy_tick: number | null;
   current_ride_id: string | null;
+  is_heading_to_dropoff: boolean;
 }
 
 interface Rider {
