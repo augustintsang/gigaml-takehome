@@ -41,6 +41,9 @@ interface State {
 export class API {
   static async getState(): Promise<State> {
     const response = await fetch(`${API_BASE_URL}/state`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     return response.json();
   }
 
